@@ -19,7 +19,7 @@ node server.js
 # Installation and usage steps for frontend
 cd frontend
 npm i or npm install
-npm start or npm run start
+npm start or npm run start 
 
 # Test the application
 npm test
