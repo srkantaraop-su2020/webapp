@@ -26,4 +26,4 @@ npm test
 
 # Accessible ports
 Front end : http://localhost:3000/
-Back end : http://localhost:8080/
+Back end : http://localhost:8080/ 
