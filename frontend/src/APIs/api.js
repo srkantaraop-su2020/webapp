@@ -54,3 +54,113 @@ export const logoutUser = async() => {
     }
   }
 }
+
+export const getBooks = async() => {
+  try{
+    const res = await axios.get('http://localhost:8080/v1/book');
+    return res.data;
+  } catch (error) {
+    if (error.response) {
+      return error.response;
+    }
+  }
+}
+
+export const createBook = async(book) => {
+  try{
+    const res = await axios.post('http://localhost:8080/v1/book',book);
+    return res.data;
+  } catch (error) {
+    if (error.response) {
+      return error.response;
+    }
+  }
+}
+
+export const createAuthor = async(author) => {
+  try{
+    const res = await axios.post('http://localhost:8080/v1/author',author);
+    return res.data;
+  } catch (error) {
+    if (error.response) {
+      return error.response;
+    }
+  }
+}
+
+export const deleteBook = async(bookId) => {
+  try{
+    const res = await axios.delete('http://localhost:8080/v1/book/'+bookId);
+    return res.data;
+  } catch (error) {
+    if (error.response) {
+      return error.response;
+    }
+  }
+}
+
+export const updateBook = async(book) => {
+  try{
+    const res = await axios.put('http://localhost:8080/v1/book', book);
+    return res.data;
+  } catch (error) {
+    if (error.response) {
+      return error.response;
+    }
+  }
+}
+
+export const updateAuthor = async(author) => {
+  try{
+    const res = await axios.put('http://localhost:8080/v1/author/'+author.bookId, author);
+    return res.data;
+  } catch (error) {
+    if (error.response) {
+      return error.response;
+    }
+  }
+}
+
+export const getBookById = async(bookId) => {
+  try{
+    const res = await axios.get('http://localhost:8080/v1/book/'+bookId);
+    return res.data;
+  } catch (error) {
+    if (error.response) {
+      return error.response;
+    }
+  }
+}
+
+export const addItemToCart = async(item) => {
+  try{
+    const res = await axios.post('http://localhost:8080/v1/addToCart', item);
+    return res.data;
+  } catch (error) {
+    if (error.response) {
+      return error.response;
+    }
+  }
+}
+
+export const getCartItemsByBuyerId = async(buyerId) => {
+  try{
+    const res = await axios.get('http://localhost:8080/v1/getCartItems/'+buyerId);
+    return res.data;
+  } catch (error) {
+    if (error.response) {
+      return error.response;
+    }
+  }
+}
+
+export const updateCartItem = async(cartId, item) => {
+  try{
+    const res = await axios.put('http://localhost:8080/v1/updateCartItem/'+cartId, item);
+    return res.data;
+  } catch (error) {
+    if (error.response) {
+      return error.response;
+    }
+  }
+}
