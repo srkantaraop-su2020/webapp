@@ -26,6 +26,7 @@ class Login extends Component{
                 }
                 else {
                     sessionStorage.setItem("userName",resp['user_name']);
+                    sessionStorage.setItem("userId",resp['id']);
                     this.props.history.push({
                         pathname: '/profile'
                     });
