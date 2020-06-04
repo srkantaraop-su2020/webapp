@@ -70,7 +70,7 @@ exports.authenticate = function (request, response) {
 
     return User.findOne({
         where: {
-            user_name: request.body.userName,
+            user_name: request.body.userName
         }
     }).then((user) =>{
 
