@@ -10,12 +10,6 @@ jobs:
       - run: npm test
 workflows:
   version: 2
-  pr-check:
-    jobs:
-    - pr_check
   build_deploy:
     jobs:
-    - build:
-        filters:
-          branches:
-            only: master
+    - build
