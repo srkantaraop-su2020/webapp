@@ -73,6 +73,7 @@ exports.updateUser = (req, res) => {
 exports.logoutUser = (req, res) => {
     req.logout();
     req.session.destroy();
+    req.session = null;  
     res.status(200);
     res.send({
       message: "Logged out successfully."
