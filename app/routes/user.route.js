@@ -4,8 +4,12 @@
 
 'use strict';
 module.exports = function (app) {
+
     const userController = require('../controllers/user.controller');
-    // Todo Routes for search and create.
+    const bookController = require('../controllers/book.controller');
+    const authorController = require('../controllers/author.controller');
+    const cartController = require('../controllers/cart.controller');
+
     app.route('/v1/user')
         .post(userController.createUser)
         .put(userController.updateUser)
@@ -14,6 +18,29 @@ module.exports = function (app) {
         .post(userController.authenticateUser);
     app.route('/v1/user/logout')
         .get(userController.logoutUser)
+
+    app.route('/v1/book')
+        .post(bookController.createBook)
+        .get(bookController.getBooks)
+        .put(bookController.updateBook);
+        
+    app.route('/v1/book/:bookId')
+        .get(bookController.getBookById)
+        .delete(bookController.deleteBook);
+
+    app.route('/v1/author')
+        .post(authorController.createAuthor);
+    app.route('/v1/author/:bookId')
+        .put(authorController.updateAuthor);
+
+    app.route('/v1/addToCart')
+        .post(cartController.addItemToCart);
+
+    app.route('/v1/getCartItems/:buyerId')
+        .get(cartController.getCartItemsByBuyerId);
+
+    app.route('/v1/updateCartItem/:cartId')
+        .put(cartController.updateCartItem)
 };
 
 function authenticationMiddleware() {
