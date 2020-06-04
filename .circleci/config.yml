@@ -1,9 +1,15 @@
 version: 2
 jobs:
+  pr_check:
+    docker:
+      - image: circleci/node:10.6.2
+    steps:
+      - checkout
+      - run: npm install
+      - run: npm test
   build:
     docker:
       - image: circleci/node:10.16.2
-    working_directory: ~/repo
     steps:
       - checkout
       - run: npm install
@@ -13,3 +19,6 @@ workflows:
   build_deploy:
     jobs:
     - build
+  pr-check:
+    jobs:
+    - pr_check
