@@ -20,5 +20,10 @@ db.Sequelize = Sequelize;
 db.sequelize = sequelize;
 
 db.users = require("./user.model.js")(sequelize, Sequelize);
+db.books = require("./book.model.js")(sequelize, Sequelize);
+db.authors = require("./author.model.js")(sequelize, Sequelize);
+db.carts = require("./cart.model.js")(sequelize, Sequelize);
+db.books.hasMany(db.authors, { as: "authors" });
+db.authors.belongsTo(db.books);
 
 module.exports = db;
