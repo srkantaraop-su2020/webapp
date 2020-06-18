@@ -6,6 +6,7 @@ import "./login.css"
 
 class Login extends Component{
     constructor(props) {
+        console.log(process.env.REACT_APP_IP_ADDRESS)
         super(props);
         this.state={
             fullName: null,

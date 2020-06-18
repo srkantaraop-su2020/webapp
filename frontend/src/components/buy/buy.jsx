@@ -24,7 +24,7 @@ class Buy extends Component{
                 else {
                     let listOfBooks = []
                     response.forEach(book => {
-                        if(book.seller_id != sessionStorage.getItem("userId")) {
+                        if(book.seller_id != sessionStorage.getItem("userId") && book.quantity > 0) {
                             listOfBooks.push(book)
                         }
                     });

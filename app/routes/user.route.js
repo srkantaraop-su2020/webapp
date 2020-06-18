@@ -9,6 +9,7 @@ module.exports = function (app) {
     const bookController = require('../controllers/book.controller');
     const authorController = require('../controllers/author.controller');
     const cartController = require('../controllers/cart.controller');
+    const fileController = require('../controllers/file.controller');
 
     app.route('/v1/user')
         .post(userController.createUser)
@@ -41,6 +42,16 @@ module.exports = function (app) {
 
     app.route('/v1/updateCartItem/:cartId')
         .put(cartController.updateCartItem)
+
+    app.route('/v1/image')
+        .post(fileController.uploadImageToS3)
+    app.route('/v1/bookImage')
+        .post(fileController.createBookImage)
+    app.route('/v1/images/seller/:sellerId/book/:bookId')
+        .get(fileController.getImages)
+    app.route('/v1/image/fileName/:fileName/bookId/:bookId')
+        .delete(fileController.deleteFile)
+
 };
 
 function authenticationMiddleware() {

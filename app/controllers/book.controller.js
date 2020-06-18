@@ -8,9 +8,15 @@ exports.createBook = (req, res) => {
         res.json(book);
     };
 
-    bookService.save(req)
-        .then(resolve)
-        .catch(renderErrorResponse(res, 500, "Failed to create Book"));
+    const resolveToSaveBook = (book) => {
+        bookService.save(req)
+            .then(resolve)
+            .catch(renderErrorResponse(res, 500, "Failed to create Book"));
+    }
+    
+    bookService.duplicateBookCheckBySameSeller(req)
+        .then(resolveToSaveBook)
+        .catch(renderErrorResponse(res, 500, "You've already added this book. Please modify it if any changes are to be made."))
 };
 
 // Update a Book

@@ -69,3 +69,20 @@ exports.delete = function (request, response) {
     });
     return promise;
 };
+
+
+exports.duplicateBookCheckBySameSeller = function(request, response) {
+    return Book.count({
+        where: { 
+            title: request.body.title,
+            seller_id: request.body.sellerId,
+            isbn: request.body.isbn
+        }
+    })
+    .then(count => {
+        if (count > 0) 
+            return Promise.reject(new Error("You've already added this book. Please modify it if any changes are to be made."));
+        else 
+            return Promise.resolve();
+    })
+}

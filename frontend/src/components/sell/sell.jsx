@@ -82,7 +82,7 @@ class Sell extends Component{
                                     <td>${listValue["price"]}</td>
                                     <td>{listValue["quantity"]}</td>
                                     {listValue["seller_id"] == sessionStorage.getItem("userId") ? 
-                                        <td><a href={"/updateBook?"+ listValue["id"]}>Update</a></td>
+                                        <td><a href={"/updateBook?"+ listValue["id"]}>View/Edit</a></td>
                                     :
                                        <td> Not Allowed</td>
                                     }
