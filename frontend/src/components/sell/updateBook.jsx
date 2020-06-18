@@ -1,3 +1,4 @@
+
 import React,{ Component } from "react";
 import  * as ax  from '../../APIs/api';
 import Form from 'react-bootstrap/Form';
@@ -6,6 +7,7 @@ import Button from 'react-bootstrap/Button'
 
 class UpdateBook extends Component {
 
+    listOfSources = []
     constructor(props) {
         super(props);
         this.state={
@@ -28,6 +30,27 @@ class UpdateBook extends Component {
                     authors.forEach(author => {
                         authorNameList = authorNameList + author.author_name + ","
                     });
+                    ax.getImagesOfBook(response.seller_id, bookId).then(resp => {
+                        if(resp != undefined) {
+                            for(var i=0;i<resp.data.listOfSources.length;i++){
+                                let  imgdata = resp.data.listOfSources[i]
+                                let  imgName = resp.data.listOfImageNames[i]
+                                  
+                                var a = document.createElement("div");
+                                var x = document.createElement("img");
+                                let srcc= "data:image/png;base64,"+imgdata;
+                                x.setAttribute("src",srcc );
+                      
+                                var y = document.createElement("button");
+                                y.setAttribute("id",imgName+'#'+bookId);
+                                y.innerHTML="Delete Image"
+                                y.addEventListener("click", this.deleteImage);
+                                a.appendChild(x)
+                                a.appendChild(y)
+                                document.getElementById("images").appendChild(a);
+                            }
+                        }
+                    })
                     this.setState({
                         book: response,
                         authors: authorNameList
@@ -35,6 +58,21 @@ class UpdateBook extends Component {
                 }
             })
         }
+    }
+
+    deleteImage(event) {
+        event.preventDefault();
+        let fileName = event.target.id.split('#')[0]
+        let bookId = event.target.id.split('#')[1]
+        ax.deleteImage(fileName, bookId).then(resp => {
+            if(resp != undefined) {
+                alert("Successfully deleted the image")
+                window.location.reload()
+            }
+            else {
+                alert("Failed to delete the image")
+            }
+        })
     }
 
     updateBook(e) {
@@ -134,7 +172,7 @@ class UpdateBook extends Component {
 
                     <Form.Group>
                         <Form.Label>Publication Date</Form.Label>
-                        <Form.Control type="date" id="pubDate" placeholder="" onfocus="(this.type='date')"/>
+                        <Form.Control type="date" id="pubDate" placeholder="" onFocus="(this.type='date')"/>
                     </Form.Group> 
 
                     <Form.Group>
@@ -151,6 +189,7 @@ class UpdateBook extends Component {
                         UPDATE
                     </Button>
                 </Form> 
+                <div id ="images"></div>
                 </div> 
             </div> 
         )
