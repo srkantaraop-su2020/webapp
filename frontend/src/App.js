@@ -43,6 +43,7 @@ function App() {
         <Route path="/sell" component={Sell} />
         <Route path="/createBook"component={CreateBook} />
         <Route path="/updateBook"component={UpdateBook} />
+        <Route path="/viewBook"component={UpdateBook} />
         <Route path="/viewCart"component={Cart} />
         <Route path="/" exact component={Login} />
       </Switch>

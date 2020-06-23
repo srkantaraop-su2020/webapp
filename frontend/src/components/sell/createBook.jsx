@@ -6,6 +6,8 @@ import axios from 'axios';
 
 class CreateBook extends Component {
 
+    ipAddress = process.env.REACT_APP_IP_ADDRESS;
+
     constructor(props){
         super(props);
         this.state = {
@@ -51,12 +53,25 @@ class CreateBook extends Component {
                             }
                             else {
                                 if(document.getElementById("file_uploader").files.length > 0) {
+                                    // Object.values(document.getElementById("file_uploader").files).map((file)=>{
+                                    //     axios.post("http://localhost:8080/v1/image2", {
+                                    //         fileName : file.name, 
+                                    //         bookImage: file,
+                                    //         ownerId : resp.seller_id,
+                                    //         bookId : resp.id
+                                    //     })
+                                    //     .then((response) => {
+                                    //         if(response !== undefined) {
+                                    //             alert("Created Book and uploaded image successfully")
+                                    //         }
+                                    //     })
+                                    // })
                                     Object.values(document.getElementById("file_uploader").files).map((file)=>{
                                         imageCount++
                                         let fileName = file.name;
                                         let fileType = file.type;
                                         console.log("Preparing the upload");
-                                        axios.post("http://localhost:8080/v1/image",{
+                                        axios.post("http://"+this.ipAddress+":8080/v1/image",{
                                             fileName : fileName,
                                             fileType : fileType,
                                             bookId : resp.id
@@ -79,7 +94,7 @@ class CreateBook extends Component {
                                                 console.log("Response from s3")
                                                 this.setState({success: true});
 
-                                                axios.post("http://localhost:8080/v1/bookImage",{
+                                                axios.post("http://"+this.ipAddress+":8080/v1/bookImage",{
                                                     fileName : fileName,
                                                     ownerId : resp.seller_id,
                                                     bookId : resp.id

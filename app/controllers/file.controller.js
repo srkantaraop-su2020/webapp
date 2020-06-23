@@ -3,13 +3,14 @@ require('dotenv').config(); // Configure dotenv to load in the .env file
 
 const bookService = require('../services/book.service');
 const fileService = require('../services/file.service')
+var sts = new aws.STS();
 
 // Configure aws with your accessKeyId and your secretAccessKey
 aws.config.update({
-  region: 'us-east-1', // Put your aws region here
-  accessKeyId: "AKIAUWJTDERI7RAZX6O5",
-  secretAccessKey: "edAgBec91D8o0LCpuHkqHXtjBtZfofCVftUbuixk",
-  signatureVersion:"v4"
+    region: 'us-east-1', // Put your aws region here
+    accessKeyId: process.env.accessKeyId,
+    secretAccessKey: process.env.secretAccessKey,
+    signatureVersion:"v4"
 })
 
 const S3_BUCKET = process.env.S3_BUCKET_NAME
@@ -56,8 +57,8 @@ exports.getImages = (req, res) => {
         if(images !== undefined) {
             images.forEach(image => {
                 const s3Client = new aws.S3({
-                    accessKeyId:"AKIAUWJTDERI7RAZX6O5",
-                    secretAccessKey: "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",
+                    accessKeyId: process.env.accessKeyId,
+                    secretAccessKey: process.env.secretAccessKey,
                     region : 'us-east-1',
                     signatureVersion:"v4"
                 });
@@ -81,25 +82,52 @@ exports.getImages = (req, res) => {
 
 exports.deleteFile=(req,res)=>{
     var s3 = new aws.S3({
-        accessKeyId:"AKIAUWJTDERI7RAZX6O5",
-        secretAccessKey: "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",
+        accessKeyId: process.env.accessKeyId,
+        secretAccessKey: process.env.secretAccessKey,
         region : 'us-east-1',
         signatureVersion:"v4"
     });
-    var params = {  Bucket: S3_BUCKET, Key: 'book-'+req.params.bookId+'-'+req.params.fileName };
-    
-    s3.deleteObject(params, function(err, data) {
-        if (err) console.log(err, err.stack);  // error
-        else{
-            fileService.deleteImagefromDB(req)
-            .then((data)=>{
-                res.status(200);
-                res.json({
-                    msg:"Image deleted Successfully"
-                })
-            })
+
+    var params;
+    let fileNameList;
+    console.log("***********image names in controller:"+req.params.fileName)
+    if (req.params.fileName.includes(',')) {
+        fileNameList = req.params.fileName.split(",")
+        for(let i=0;i<fileNameList.length;i++) {
+            params = {  Bucket: S3_BUCKET, Key: 'book-'+req.params.bookId+'-'+fileNameList[i] };
+            console.log("*********params:"+params)
+            s3.deleteObject(params, function(err, data) {
+                if (err) console.log(err, err.stack);  // error
+                else{
+                    if(i == fileNameList.length-1) {
+                        console.log("************ Finished deleting images on S3 bucket, now starting with db")
+                        fileService.deleteImagefromDB(req)
+                        .then((data)=>{
+                            res.status(200);
+                            res.json({
+                                msg:"Image deleted Successfully"
+                            })
+                        })
+                    }
+                }
+            });
         }
-    });
+    }
+    else {
+        params = {  Bucket: S3_BUCKET, Key: 'book-'+req.params.bookId+'-'+req.params.fileName };
+        s3.deleteObject(params, function(err, data) {
+            if (err) console.log(err, err.stack);  // error
+            else{
+                fileService.deleteImagefromDB(req)
+                .then((data)=>{
+                    res.status(200);
+                    res.json({
+                        msg:"Image deleted Successfully"
+                    })
+                })
+            }
+        });
+    }    
   }
 
 exports.createBookImage = (req, res) => {

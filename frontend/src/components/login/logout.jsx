@@ -7,6 +7,7 @@ class Logout extends Component{
         ax.logoutUser().then(resp => {
             if(resp!==undefined){
                 sessionStorage.setItem('userName','')
+                sessionStorage.setItem('userId','')
                 alert("logged out successfully!")
                 window.location.href="/"
             }

@@ -29,12 +29,25 @@ exports.get = function (request, response) {
 };
 
 exports.deleteImagefromDB = function (request, response) {
-    const promise = File.destroy({
-        where: { 
-            file_name: request.params.fileName,
-            book_id: request.params.bookId
-         }
-    });
+    let fileNameList
+    let promise
+    if (request.params.fileName.includes(',')) {
+        fileNameList = request.params.fileName.split(",")
+        promise = File.destroy({
+            where: { 
+                file_name: fileNameList,
+                book_id: request.params.bookId
+             }
+        });
+    }
+    else {
+        promise = File.destroy({
+            where: { 
+                file_name: request.params.fileName,
+                book_id: request.params.bookId
+            }
+        });
+    }
     return promise;
 }
 
