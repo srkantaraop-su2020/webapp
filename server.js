@@ -1,7 +1,6 @@
-console.log(`Your port is ${process.env.PORT}`); // undefined
 const dotenv = require('dotenv');
 dotenv.config();
-console.log(`Your port is ${process.env.PORT}`);
+console.log(`Your port is ${process.env.IP_ADDRESS}`);
 
 let express = require('express'),
     app = express(),
@@ -49,7 +48,7 @@ app.use(passport.session());
 
 //Enabling CORS
 app.use(function (req, res, next) { //next is a function that calls next middleware function;
-    res.header("Access-Control-Allow-Origin", "http://"+process.env.PORT+":3000");
+    res.header("Access-Control-Allow-Origin", "http://"+process.env.IP_ADDRESS+":3000");
     res.header("Access-Control-Allow-Credentials", true);
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
     res.header("Access-Control-Allow-Methods", "GET, POST, OPTIONS, PUT, DELETE");

@@ -10,6 +10,7 @@ module.exports = function (app) {
     const authorController = require('../controllers/author.controller');
     const cartController = require('../controllers/cart.controller');
     const fileController = require('../controllers/file.controller');
+    const fileConfig = require('../config/file.config');
 
     app.route('/v1/user')
         .post(userController.createUser)
@@ -51,6 +52,8 @@ module.exports = function (app) {
         .get(fileController.getImages)
     app.route('/v1/image/fileName/:fileName/bookId/:bookId')
         .delete(fileController.deleteFile)
+
+    // app.post('/v1/image2', fileConfig.upload.single('bookImage'),fileController.createBookImage)
 
 };
 

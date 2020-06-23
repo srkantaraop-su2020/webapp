@@ -35,14 +35,27 @@ class Sell extends Component{
     deleteBook(e, bookId) {
         e.preventDefault();
        
-        let decision = window.confirm("Are you sure you want to delete the book?");
+        let decision = window.confirm("Are you sure you want to delete the book and its images?");
         if (decision === true) {
             let req = {"bookId": bookId}
             console.log(req)
             ax.deleteBook(bookId).then((response) => {
                 if(response !== undefined) {
-                    alert("Successfully deleted the book!")
-                   window.location.reload();
+                    ax.getImagesOfBook(sessionStorage.getItem('userId'), bookId).then(resp => {
+                        if(resp != undefined) {
+                            let imgNames = ""
+                            for(var i=0;i<resp.data.listOfImageNames.length;i++){
+                                imgNames += resp.data.listOfImageNames[i]
+                                if(i<resp.data.listOfImageNames.length-1) {
+                                    imgNames += ","
+                                }
+                            }
+                            ax.deleteImage(imgNames, bookId).then(() => {
+                                alert("Successfully deleted the book!")
+                                window.location.reload();
+                            })
+                        }
+                    })
                 }
             })
         } 

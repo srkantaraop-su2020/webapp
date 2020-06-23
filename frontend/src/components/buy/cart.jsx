@@ -97,7 +97,7 @@ class Cart extends Component{
                                 <tr key={index}>
                                     <td>{listValue["id"]}</td>
                                     <td>{listValue["book_id"]}</td>
-                                    <td>{listValue["book_name"]}</td>
+                                    <td><a href={"/viewBook?"+ listValue["book_id"]}>{listValue["book_name"]}</a></td>
                                     <td>${listValue["price"]}</td>
                                     <td><Form.Control type="number" id={listValue["quantity"]} placeholder= {listValue["quantity"]}/></td>
                                     {this.state.nonDeletedBooks.indexOf(listValue["book_id"]) == -1 ? 

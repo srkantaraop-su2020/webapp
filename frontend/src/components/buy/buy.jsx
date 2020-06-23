@@ -84,7 +84,7 @@ class Buy extends Component{
                             return (
                                 <tr key={index}>
                                     <td>{listValue["id"]}</td>
-                                    <td>{listValue["title"]}</td>
+                                    <td><a href={"/viewBook?"+ listValue["id"]}>{listValue["title"]}</a></td>
                                     <td>{listValue["isbn"]}</td>
                                     <td>${listValue["price"]}</td>
                                     <td>{listValue["quantity"]}</td>

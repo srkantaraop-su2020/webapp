@@ -3,10 +3,11 @@ import React,{ Component } from "react";
 import  * as ax  from '../../APIs/api';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button'
-// import "./signup.css"
+import axios from 'axios';
 
 class UpdateBook extends Component {
 
+    ipAddress = process.env.REACT_APP_IP_ADDRESS;
     listOfSources = []
     constructor(props) {
         super(props);
@@ -46,7 +47,9 @@ class UpdateBook extends Component {
                                 y.innerHTML="Delete Image"
                                 y.addEventListener("click", this.deleteImage);
                                 a.appendChild(x)
-                                a.appendChild(y)
+                                if(sessionStorage.getItem('userId') == this.state.book.seller_id){
+                                    a.appendChild(y)
+                                }
                                 document.getElementById("images").appendChild(a);
                             }
                         }
@@ -125,15 +128,59 @@ class UpdateBook extends Component {
                                 }
                                 else {
                                     alert("Updated Book with Author successfully")
-                                    window.location.reload();
                                 }
                             }
                         })
-
                     }
-                    else {
-                        alert("Updated Book successfully")
-                        window.location.reload();
+                    if(document.getElementById("file_uploader").files.length > 0) {
+                        let imageCount = 0;
+                        Object.values(document.getElementById("file_uploader").files).map((file)=>{
+                            imageCount++
+                            let fileName = file.name;
+                            let fileType = file.type;
+                            console.log("Preparing the upload");
+                            axios.post("http://"+this.ipAddress+":8080/v1/image",{
+                                fileName : fileName,
+                                fileType : fileType,
+                                bookId : this.state.book.id
+                            })
+                            .then(response => {
+                                var returnData = response.data.data.returnData;
+                                var signedRequest = returnData.signedRequest;
+                                var url = returnData.url;
+                                this.setState({url: url})
+                                console.log("Recieved a signed request " + signedRequest);
+                                
+                                // Put the fileType in the headers for the upload
+                                var options = {
+                                    headers: {
+                                    'Content-Type': fileType
+                                    }
+                                };
+                                axios.put(signedRequest,file,options)
+                                .then(result => {
+                                    console.log("Response from s3")
+                                    this.setState({success: true});
+
+                                    axios.post("http://"+this.ipAddress+":8080/v1/bookImage",{
+                                        fileName : fileName,
+                                        ownerId : this.state.book.seller_id,
+                                        bookId : this.state.book.id
+                                    }).then(() => {
+                                        if(document.getElementById("file_uploader").files.length === imageCount) {
+                                            alert("Updated book and uploaded new image successfully")
+                                            window.location.reload()
+                                        } 
+                                    })
+                                })
+                                .catch(error => {
+                                    alert("ERROR " + JSON.stringify(error));
+                                })
+                            })
+                            .catch(error => {
+                                alert(JSON.stringify(error));
+                            })
+                        });
                     }
                 }
             }
@@ -143,54 +190,101 @@ class UpdateBook extends Component {
     render(){
         return(
             <div>
-                <h4>Update Book here</h4>
-                <div className="loginSignupForm">
-                <Form>
-                   <Form.Group>
-                        <Form.Label>ISBN</Form.Label>
-                        <Form.Control type="text" id="isbn" placeholder={this.state.book.isbn} />
-                        <Form.Text className="text-muted">
-                        Ex: 9780133387520
-                        </Form.Text>
-                    </Form.Group>    
+                {sessionStorage.getItem('userId') == this.state.book.seller_id ? 
+                    <div>
+                        <h4>Update Book here</h4>
+                        <div className="loginSignupForm">
+                        <Form>
+                            <Form.Group>
+                                <Form.Label>ISBN</Form.Label>
+                                <Form.Control type="text" id="isbn" placeholder={this.state.book.isbn} />
+                                <Form.Text className="text-muted">
+                                Ex: 9780133387520
+                                </Form.Text>
+                            </Form.Group>    
 
-                    <Form.Group>
-                        <Form.Label>Title</Form.Label>
-                        <Form.Control type="text" id="title" placeholder={this.state.book.title} />
-                        <Form.Text className="text-muted">
-                        Ex: Cloud Computing: Concepts, Technology & Architecture
-                        </Form.Text>
-                    </Form.Group>
+                            <Form.Group>
+                                <Form.Label>Title</Form.Label>
+                                <Form.Control type="text" id="title" placeholder={this.state.book.title} />
+                                <Form.Text className="text-muted">
+                                Ex: Cloud Computing: Concepts, Technology & Architecture
+                                </Form.Text>
+                            </Form.Group>
 
-                    <Form.Group>
-                        <Form.Label>Authors</Form.Label>
-                        <Form.Control type="text" id="authors" placeholder={this.state.authors} />
-                        <Form.Text className="text-muted">
-                        Ex: Thomas Erl, Ricardo Puttini, Zaigham Mahmood
-                        </Form.Text>
-                    </Form.Group>
+                            <Form.Group>
+                                <Form.Label>Authors</Form.Label>
+                                <Form.Control type="text" id="authors" placeholder={this.state.authors} />
+                                <Form.Text className="text-muted">
+                                Ex: Thomas Erl, Ricardo Puttini, Zaigham Mahmood
+                                </Form.Text>
+                            </Form.Group>
 
-                    <Form.Group>
-                        <Form.Label>Publication Date</Form.Label>
-                        <Form.Control type="date" id="pubDate" placeholder="" onFocus="(this.type='date')"/>
-                    </Form.Group> 
+                            <Form.Group>
+                                <Form.Label>Publication Date</Form.Label>
+                                <Form.Control type="date" id="pubDate" placeholder="" onFocus="(this.type='date')"/>
+                            </Form.Group>
 
-                    <Form.Group>
-                        <Form.Label>Quantity</Form.Label>
-                        <Form.Control type="number" id="quantity" placeholder={this.state.book.quantity} />
-                    </Form.Group> 
+                            <Form.Group>
+                                <Form.Label>Quantity</Form.Label>
+                                <Form.Control type="number" id="quantity" placeholder={this.state.book.quantity} />
+                            </Form.Group> 
 
-                    <Form.Group>
-                        <Form.Label>Price</Form.Label>
-                        <Form.Control type="number" step="0.01" id="price" placeholder={this.state.book.price} />
-                    </Form.Group> 
-                    
-                    <Button variant="primary" type="submit" onClick={(e)=>{this.updateBook(e)}}>
-                        UPDATE
-                    </Button>
-                </Form> 
-                <div id ="images"></div>
-                </div> 
+                            <Form.Group>
+                                <Form.Label>Price</Form.Label>
+                                <Form.Control type="number" step="0.01" id="price" placeholder={this.state.book.price} />
+                            </Form.Group> 
+                            
+                            <Form.Group>
+                                <input id="file_uploader" type="file" multiple/>
+                            </Form.Group>
+
+                            <Button variant="primary" type="submit" onClick={(e)=>{this.updateBook(e)}}>
+                                UPDATE
+                            </Button>
+                        </Form> 
+                        <div id ="images"></div>
+                        </div>
+                    </div> 
+                    : 
+                    <div> 
+                        <h4>View Book details here</h4>
+                        <div className="loginSignupForm">
+                        <Form>
+                        <Form.Group>
+                                <Form.Label>ISBN</Form.Label>
+                                <Form.Control disabled type="text" id="isbn" placeholder={this.state.book.isbn} />
+                            </Form.Group>    
+
+                            <Form.Group>
+                                <Form.Label>Title</Form.Label>
+                                <Form.Control disabled type="text" id="title" placeholder={this.state.book.title} />
+                            </Form.Group>
+
+                            <Form.Group>
+                                <Form.Label>Authors</Form.Label>
+                                <Form.Control disabled type="text" id="authors" placeholder={this.state.authors} />
+                            </Form.Group>
+
+                            <Form.Group>
+                                <Form.Label>Publication Date</Form.Label>
+                                <Form.Control disabled type="text" id="pubDate" placeholder={this.state.book.publication_date}/>
+                            </Form.Group>
+
+                            <Form.Group>
+                                <Form.Label>Quantity</Form.Label>
+                                <Form.Control disabled type="number" id="quantity" placeholder={this.state.book.quantity} />
+                            </Form.Group> 
+
+                            <Form.Group>
+                                <Form.Label>Price</Form.Label>
+                                <Form.Control disabled type="number" step="0.01" id="price" placeholder={this.state.book.price} />
+                            </Form.Group>
+                        </Form> 
+                        <div id ="images"></div>
+                        </div>
+                    </div> 
+                }
+                 
             </div> 
         )
     }
