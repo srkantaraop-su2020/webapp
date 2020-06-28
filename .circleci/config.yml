@@ -14,7 +14,7 @@ jobs:
       - checkout
       - run: npm install
       - run: npm test
-   deploy:
+  deploy:
     docker:
       - image: circleci/python:2.7-jessie
     steps:
@@ -48,4 +48,8 @@ workflows:
     - pr_check
   build_deploy:
     jobs:
-    - build
+    - build:
+      filters:
+        branches:
+          only: master
+    - deploy
