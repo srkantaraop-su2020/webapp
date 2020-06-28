@@ -14,6 +14,33 @@ jobs:
       - checkout
       - run: npm install
       - run: npm test
+   deploy:
+    docker:
+      - image: circleci/python:2.7-jessie
+    steps:
+      - checkout        
+      - run:
+          name: Updating apt-get
+          command: sudo apt-get update
+      - run:
+          name: Installing wget
+          command: 'sudo apt-get install wget zip unzip'
+      - run:
+          name: Installing aws cli
+          command: sudo pip install awscli
+      - run:
+          name: Compress web app
+          command: |
+            aws configure set default.region us-east-1
+            mkdir -p webapp_zip
+            cp codedeploy/*.sh .
+            zip -r webapp.zip app frontend test *.sh *.html *.yml *.json *.js
+            mv webapp.zip webapp_zip/
+      - run:
+          name: Upload Artifact to S3 bucket
+          command: |
+            aws s3 cp webapp_zip/webapp.zip s3://webapp.pavan.rao
+
 workflows:
   version: 2
   pr-check:
