@@ -1,4 +1,4 @@
-cd /home/ubuntu
+cd /home/ubuntu/frontend
 pwd
 ls -al
-REACT_APP_IP_ADDRESS=18.205.114.150 npm start
+REACT_APP_IP_ADDRESS=54.175.4.197 npm start
