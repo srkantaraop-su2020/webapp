@@ -34,7 +34,7 @@ jobs:
             aws configure set default.region us-east-1
             mkdir -p webapp_zip
             cp codedeploy/*.sh .
-            zip -r webapp.zip app frontend test *.sh *.html *.yml *.json *.js
+            zip -r webapp.zip${CIRCLE_BUILD_NUM} app frontend test *.sh *.html *.yml *.json *.js
             mv webapp.zip webapp_zip/
       - run:
           name: Upload Artifact to S3 bucket
