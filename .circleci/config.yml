@@ -39,7 +39,7 @@ jobs:
       - run:
           name: Upload Artifact to S3 bucket
           command: |
-            aws s3 cp webapp_zip/webapp.zip s3://webapp.pavan.rao
+            aws s3 cp webapp_zip/webapp.zip s3://codedeploy.pavan.website
 
 workflows:
   version: 2
