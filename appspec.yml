@@ -6,6 +6,10 @@ files:
     destination: /home/ubuntu
 
 hooks:
+  ApplicationStop:
+    - location: ./applicationStart.sh
+      timeout: 300
+
   AfterInstall:
     - location: ./afterInstall.sh
       timeout: 300
