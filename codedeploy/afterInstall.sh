@@ -1,2 +1,4 @@
 cd /home/ubuntu
-mkdir test
+npm install
+cd frontend/
+npm install
