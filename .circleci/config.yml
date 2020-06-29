@@ -38,10 +38,18 @@ jobs:
             ls -la
             touch ip.txt
             sudo echo IP_ADDRESS=${IP_ADDRESS} >> ip.txt
+            cat ip.txt
             touch ip2.txt
             sudo echo export IP_ADDRESS=${IP_ADDRESS} >> ip2.txt
+            cat 1p2.txt
             sudo chmod 765 ip.txt
             ls -la
+            cd /
+            sudo chmod 757 data.txt
+            cp data.txt /home/circleci/project
+            cd /home/circleci/project
+            ls -la
+            sudo chmod 757 data.txt
             cat data.txt
             cat ip.txt
             cat data.txt ip.txt > .env
