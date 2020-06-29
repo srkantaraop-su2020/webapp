@@ -33,12 +33,20 @@ jobs:
           command: |
             aws configure set default.region us-east-1
             mkdir -p webapp_zip
-            pwd
-            ls -la
             cp codedeploy/*.sh .
             pwd 
             ls -la
-            zip -r webapp-${CIRCLE_BUILD_NUM}.zip app frontend test *.sh *.html *.yml *.json *.js
+            touch ip.txt
+            sudo echo IP_ADDRESS=${IP_ADDRESS} >> ip.txt
+            touch ip2.txt
+            sudo echo export IP_ADDRESS=${IP_ADDRESS} >> ip2.txt
+            sudo chmod 765 ip.txt
+            ls -la
+            cat data.txt
+            cat ip.txt
+            cat data.txt ip.txt > .env
+            cat .env
+            zip -r webapp-${CIRCLE_BUILD_NUM}.zip app frontend test *.sh *.html *.yml *.json *.js *.txt .env
             pwd 
             ls -la
             mv webapp-${CIRCLE_BUILD_NUM}.zip webapp_zip/
