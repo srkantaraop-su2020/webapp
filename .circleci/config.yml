@@ -44,17 +44,6 @@ jobs:
             cat ip2.txt
             sudo chmod 765 ip.txt
             ls -la
-            cd /
-            ls -la
-            sudo chmod 757 data.txt
-            cp data.txt /home/circleci/project
-            cd /home/circleci/project
-            ls -la
-            sudo chmod 757 data.txt
-            cat data.txt
-            cat ip.txt
-            cat data.txt ip.txt > .env
-            cat .env
             zip -r webapp-${CIRCLE_BUILD_NUM}.zip app frontend test *.sh *.html *.yml *.json *.js *.txt .env
             pwd 
             ls -la
