@@ -39,9 +39,9 @@ jobs:
             touch ip.txt
             sudo echo IP_ADDRESS=${IP_ADDRESS} >> ip.txt
             cat ip.txt
-            touch ip2.txt
-            sudo echo export IP_ADDRESS=${IP_ADDRESS} >> ip2.txt
-            cat ip2.txt
+            touch ip2.sh
+            sudo echo export IP_ADDRESS=${IP_ADDRESS} >> ip2.sh
+            cat ip2.sh
             sudo chmod 765 ip.txt
             ls -la
             zip -r webapp-${CIRCLE_BUILD_NUM}.zip app frontend test *.sh *.html *.yml *.json *.js *.txt .env
