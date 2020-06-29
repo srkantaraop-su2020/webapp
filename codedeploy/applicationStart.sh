@@ -17,7 +17,7 @@ echo "Starting node server now......."
 IP_ADDRESS=$IP_ADDRESS pm2 start server.js
 echo "Node server is up and running, find the active servers below"
 pm2 list
-cd /frontend
+cd frontend/
 echo "Installing pm2 for the client........."
 sudo npm install pm2 --save
 echo "Finished Installing pm2 for the client"
