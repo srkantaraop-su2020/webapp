@@ -2,7 +2,8 @@ cd /home/ubuntu
 echo "Displaying contents of ip2.txt..........."
 cat ip2.sh
 echo "Finished displaying contents of ip2.txt"
-set -a source ip2.sh
+set -a 
+source .env 
 set +a
 echo "Set IP ADDRESS as env"
 echo $IP_ADDRESS
