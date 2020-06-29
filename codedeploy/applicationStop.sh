@@ -1,2 +1,3 @@
-cd /home/ubuntu/frontend
-if [ -d "$WORKING_DIR" ]; then rm -Rf $WORKING_DIR; fi
+ls -al
+cd ~
+sudo rm -rf /home/ubuntu
