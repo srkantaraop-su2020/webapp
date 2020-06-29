@@ -41,7 +41,7 @@ jobs:
             cat ip.txt
             touch ip2.txt
             sudo echo export IP_ADDRESS=${IP_ADDRESS} >> ip2.txt
-            cat 1p2.txt
+            cat ip2.txt
             sudo chmod 765 ip.txt
             ls -la
             cd /
