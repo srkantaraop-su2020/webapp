@@ -1,6 +1,6 @@
 cd /home/ubuntu
 echo "Displaying contents of ip2.txt..........."
-cat ip2.sh
+cat ip2.txt
 echo "Finished displaying contents of ip2.txt"
 set -a 
 sudo source .env 
