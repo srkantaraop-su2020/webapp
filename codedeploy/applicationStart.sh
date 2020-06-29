@@ -21,6 +21,6 @@ echo "Installing pm2 for the client........."
 sudo npm install pm2 --save
 echo "Finished Installing pm2 for the client"
 echo "Starting react server now......."
-REACT_APP_IP_ADDRESS=$IP_ADDRESS pm2 start node_modules/react-scripts/scripts/start.js --name "frontend"
+REACT_APP_IP_ADDRESS="$IP_ADDRESS" pm2 start node_modules/react-scripts/scripts/start.js --name "frontend"
 echo "Node server is up and running, find the active servers below"
 pm2 list
