@@ -1,5 +1,5 @@
 import axios from 'axios';
-let ipAddress = process.env.IP_ADDRESS;
+let ipAddress = process.env.REACT_APP_IP_ADDRESS;
 // let ipAddress = "localhost"
 export const authenticateUser = async (user) => {
   try {
