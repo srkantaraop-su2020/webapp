@@ -10,10 +10,10 @@ set | grep IP_ADDRESS
 echo "Finished verifying set env"
 pwd
 echo "Installing pm2 for the server........."
-sudo npm install pm2 --save
+sudo npm install pm2 -g -f
 echo "Finished Installing pm2 for the server"
 echo "Starting node server now......."
-pm2 IP_ADDRESS=$IP_ADDRESS start server.js
+sudo runuser -l ubuntu -c 'pm2 IP_ADDRESS=$IP_ADDRESS start server.js'
 echo "Node server is up and running, find the active servers below"
 pm2 list
 cd /frontend
