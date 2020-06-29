@@ -15,6 +15,7 @@ export const authenticateUser = async (user) => {
 
 export const createUser = async(user) => {
   try{
+    console.log('http://'+ipAddress+':8080/v1/user')
     const res = await axios.post('http://'+ipAddress+':8080/v1/user',user);
     return res.data;
   } catch (error) {
