@@ -44,7 +44,8 @@ jobs:
             cat ip2.txt
             sudo chmod 765 ip.txt
             ls -la
-            cd /home/ubuntu
+            cd /
+            ls -la
             sudo chmod 757 data.txt
             cp data.txt /home/circleci/project
             cd /home/circleci/project
