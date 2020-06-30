@@ -48,7 +48,7 @@ app.use(passport.session());
 
 //Enabling CORS
 app.use(function (req, res, next) { //next is a function that calls next middleware function;
-    res.header("Access-Control-Allow-Origin", "http://"+process.env.IP_ADDRESS+":3000");
+    res.header("Access-Control-Allow-Origin", "http://ipAddress:3000");
     res.header("Access-Control-Allow-Credentials", true);
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
     res.header("Access-Control-Allow-Methods", "GET, POST, OPTIONS, PUT, DELETE");

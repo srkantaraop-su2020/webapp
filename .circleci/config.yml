@@ -14,6 +14,52 @@ jobs:
       - checkout
       - run: npm install
       - run: npm test
+  deploy:
+    docker:
+      - image: circleci/python:2.7-jessie
+    steps:
+      - checkout        
+      - run:
+          name: Updating apt-get
+          command: sudo apt-get update
+      - run:
+          name: Installing wget
+          command: 'sudo apt-get install wget zip unzip'
+      - run:
+          name: Installing aws cli
+          command: sudo pip install awscli
+      - run:
+          name: Compress web app
+          command: |
+            aws configure set default.region us-east-1
+            mkdir -p webapp_zip
+            cp codedeploy/*.sh .
+            pwd 
+            ls -la
+            touch ip.txt
+            sudo echo ${IP_ADDRESS} >> ip.txt
+            cat ip.txt
+            touch ip2.txt
+            sudo echo REACT_APP_IP_ADDRESS=${IP_ADDRESS} >> ip2.txt
+            cat ip2.txt
+            sudo chmod 765 ip.txt
+            ls -la
+            zip -r webapp-${CIRCLE_BUILD_NUM}.zip app frontend test *.sh *.html *.yml *.json *.js *.txt .env
+            pwd 
+            ls -la
+            mv webapp-${CIRCLE_BUILD_NUM}.zip webapp_zip/
+            pwd
+            ls -la
+      - run:
+          name: Upload Artifact to S3 bucket
+          command: |
+            aws s3 cp webapp_zip/webapp-${CIRCLE_BUILD_NUM}.zip s3://${S3_BUCKET_NAME}
+      - run:
+          name: AWS CodeDeploy call
+          command: |
+            aws deploy register-application-revision --application-name csye6225-webapp --s3-location bucket=${S3_BUCKET_NAME},bundleType=zip,key=webapp-${CIRCLE_BUILD_NUM}.zip
+            aws deploy create-deployment --application-name csye6225-webapp --deployment-group-name csye6225-webapp-deployment --s3-location bucket=${S3_BUCKET_NAME},bundleType=zip,key=webapp-${CIRCLE_BUILD_NUM}.zip --deployment-config-name CodeDeployDefault.AllAtOnce 
+
 workflows:
   version: 2
   pr-check:
@@ -22,3 +68,4 @@ workflows:
   build_deploy:
     jobs:
     - build
+    - deploy

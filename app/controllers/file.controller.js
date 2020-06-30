@@ -5,12 +5,10 @@ const bookService = require('../services/book.service');
 const fileService = require('../services/file.service')
 var sts = new aws.STS();
 
-// Configure aws with your accessKeyId and your secretAccessKey
+// Configure aws with your region
 aws.config.update({
     region: 'us-east-1', // Put your aws region here
-    accessKeyId: process.env.accessKeyId,
-    secretAccessKey: process.env.secretAccessKey,
-    signatureVersion:"v4"
+    signatureVersion:"v4" 
 })
 
 const S3_BUCKET = process.env.S3_BUCKET_NAME
@@ -57,8 +55,6 @@ exports.getImages = (req, res) => {
         if(images !== undefined) {
             images.forEach(image => {
                 const s3Client = new aws.S3({
-                    accessKeyId: process.env.accessKeyId,
-                    secretAccessKey: process.env.secretAccessKey,
                     region : 'us-east-1',
                     signatureVersion:"v4"
                 });
@@ -82,8 +78,6 @@ exports.getImages = (req, res) => {
 
 exports.deleteFile=(req,res)=>{
     var s3 = new aws.S3({
-        accessKeyId: process.env.accessKeyId,
-        secretAccessKey: process.env.secretAccessKey,
         region : 'us-east-1',
         signatureVersion:"v4"
     });

@@ -7,7 +7,6 @@ import axios from 'axios';
 
 class UpdateBook extends Component {
 
-    ipAddress = process.env.REACT_APP_IP_ADDRESS;
     listOfSources = []
     constructor(props) {
         super(props);
@@ -139,7 +138,7 @@ class UpdateBook extends Component {
                             let fileName = file.name;
                             let fileType = file.type;
                             console.log("Preparing the upload");
-                            axios.post("http://"+this.ipAddress+":8080/v1/image",{
+                            axios.post("http://ipAddress:8080/v1/image",{
                                 fileName : fileName,
                                 fileType : fileType,
                                 bookId : this.state.book.id
@@ -162,7 +161,7 @@ class UpdateBook extends Component {
                                     console.log("Response from s3")
                                     this.setState({success: true});
 
-                                    axios.post("http://"+this.ipAddress+":8080/v1/bookImage",{
+                                    axios.post("http://ipAddress:8080/v1/bookImage",{
                                         fileName : fileName,
                                         ownerId : this.state.book.seller_id,
                                         bookId : this.state.book.id

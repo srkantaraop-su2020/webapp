@@ -12,7 +12,7 @@ import Sell from "../src/components/sell/sell";
 import CreateBook from "../src/components/sell/createBook";
 import UpdateBook from "../src/components/sell/updateBook";
 import Cart from "../src/components/buy/cart";
-
+require('dotenv').config({path:'~/.env'})
 function App() {
   return (
     <div className="container-fluid">
