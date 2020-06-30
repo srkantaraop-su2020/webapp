@@ -7,7 +7,6 @@ import axios from 'axios';
 
 class UpdateBook extends Component {
 
-    ipAddress = process.env.REACT_APP_IP_ADDRESS;
     listOfSources = []
     constructor(props) {
         super(props);
