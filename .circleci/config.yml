@@ -37,7 +37,7 @@ jobs:
             pwd 
             ls -la
             touch ip.txt
-            sudo echo IP_ADDRESS=${IP_ADDRESS} >> ip.txt
+            sudo echo ${IP_ADDRESS} >> ip.txt
             cat ip.txt
             touch ip2.txt
             sudo echo REACT_APP_IP_ADDRESS=${IP_ADDRESS} >> ip2.txt
