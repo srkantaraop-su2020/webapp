@@ -1,5 +1,4 @@
 import axios from 'axios';
-let ipAddress;
 export const authenticateUser = async (user) => {
   try {
     const res = await axios.post('http://ipAddress:8080/v1/user/login', user);
