@@ -24,7 +24,7 @@ echo "Starting react server now......."
 cd /home/ubuntu
 value=`cat ip.txt`
 echo "$value"
-cd src/APIs/
+cd /home/ubuntu/frontend/src/APIs/
 sudo sed -i -e "s|ipAddress|$value|g" api.js
 cd ../../
 REACT_APP_IP_ADDRESS=`$IP_ADDRESS` pm2 start node_modules/react-scripts/scripts/start.js --name "frontend"
