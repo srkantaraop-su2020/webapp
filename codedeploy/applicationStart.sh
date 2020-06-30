@@ -5,6 +5,9 @@ echo "Finished displaying contents of ip2.txt"
 set -a 
 source .env 
 set +a
+echo "Going to sleep...."
+sleep 10
+echo "finished"
 echo "Set IP ADDRESS as env"
 echo $IP_ADDRESS
 echo "Finished verifying set env"
