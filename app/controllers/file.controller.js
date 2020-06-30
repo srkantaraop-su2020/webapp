@@ -55,8 +55,6 @@ exports.getImages = (req, res) => {
         if(images !== undefined) {
             images.forEach(image => {
                 const s3Client = new aws.S3({
-                    accessKeyId: "AKIAS2JRZPZWZ6GBDBB2",
-                    secretAccessKey: "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",
                     region : 'us-east-1',
                     signatureVersion:"v4"
                 });
@@ -80,8 +78,6 @@ exports.getImages = (req, res) => {
 
 exports.deleteFile=(req,res)=>{
     var s3 = new aws.S3({
-        accessKeyId: "AKIAS2JRZPZWZ6GBDBB2",
-        secretAccessKey: "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",
         region : 'us-east-1',
         signatureVersion:"v4"
     });
