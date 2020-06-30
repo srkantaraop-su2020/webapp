@@ -62,10 +62,10 @@ jobs:
 
 workflows:
   version: 2
-  # pr-check:
-  #   jobs:
-    # - pr_check
+  pr-check:
+    jobs:
+    - pr_check
   build_deploy:
     jobs:
-    # - build
+    - build
     - deploy
