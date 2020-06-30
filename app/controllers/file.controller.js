@@ -5,7 +5,7 @@ const bookService = require('../services/book.service');
 const fileService = require('../services/file.service')
 var sts = new aws.STS();
 
-// Configure aws with your accessKeyId and your secretAccessKey
+// Configure aws with your region
 aws.config.update({
     region: 'us-east-1', // Put your aws region here
     signatureVersion:"v4" 

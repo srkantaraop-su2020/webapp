@@ -7,9 +7,8 @@ let s3 = new aws.S3();
 
 let upload;
 
-aws.config.update({region: 'us-east-1'
-    // secretAccessKey: 'edAgBec91D8o0LCpuHkqHXtjBtZfofCVftUbuixk',
-    // accessKeyId: 'AKIAUWJTDERI7RAZX6O5'
+aws.config.update({
+    region: 'us-east-1'
 });
 
 if(process.env.APPLICATION_ENV == 'production'){
