@@ -1,14 +1,4 @@
 cd /home/ubuntu
-echo "Displaying contents of ip2.txt..........."
-cat ip2.txt
-echo "Finished displaying contents of ip2.txt"
-set -a 
-source .env 
-set +a
-echo "Set IP ADDRESS as env"
-echo $IP_ADDRESS
-echo "Finished verifying set env"
-pwd
 value=`cat ip.txt`
 echo "$value"
 echo "Installing pm2 for the server........."
@@ -26,7 +16,10 @@ echo "Finished Installing pm2 for the client"
 echo "Starting react server now......."
 cd /home/ubuntu/frontend/src/APIs/
 sudo sed -i -e "s|ipAddress|$value|g" api.js
-cd ../../
+cd /home/ubuntu/frontend/src/components/sell/
+sudo sed -i -e "s|ipAddress|$value|g" createBook.jsx
+sudo sed -i -e "s|ipAddress|$value|g" updateBook.jsx
+cd /home/ubuntu/frontend/
 REACT_APP_IP_ADDRESS=`$IP_ADDRESS` pm2 start node_modules/react-scripts/scripts/start.js --name "frontend"
 echo "Node server is up and running, find the active servers below"
 pm2 list
