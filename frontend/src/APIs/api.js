@@ -1,6 +1,5 @@
 import axios from 'axios';
-let ipAddress = process.env.REACT_APP_IP_ADDRESS;
-// let ipAddress = "localhost"
+let ipAddress;
 export const authenticateUser = async (user) => {
   try {
     const res = await axios.post('http://'+ipAddress+':8080/v1/user/login', user);
