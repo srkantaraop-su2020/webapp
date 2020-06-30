@@ -3,7 +3,7 @@ echo "Displaying contents of ip2.txt..........."
 cat ip2.txt
 echo "Finished displaying contents of ip2.txt"
 set -a 
-sudo source .env 
+source .env 
 set +a
 echo "Set IP ADDRESS as env"
 echo $IP_ADDRESS
