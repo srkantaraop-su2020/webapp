@@ -5,9 +5,6 @@ echo "Finished displaying contents of ip2.txt"
 set -a 
 source .env 
 set +a
-echo "Going to sleep...."
-sleep 10
-echo "finished"
 echo "Set IP ADDRESS as env"
 echo $IP_ADDRESS
 echo "Finished verifying set env"
@@ -24,9 +21,10 @@ echo "Installing pm2 for the client........."
 sudo npm install pm2 --save
 echo "Finished Installing pm2 for the client"
 echo "Starting react server now......."
-cd src/APIs/
+cd /home/ubuntu
 value=`cat ip.txt`
 echo "$value"
+cd src/APIs/
 sudo sed -i -e "s|ipAddress|$value|g" api.js
 cd ../../
 REACT_APP_IP_ADDRESS=`$IP_ADDRESS` pm2 start node_modules/react-scripts/scripts/start.js --name "frontend"
