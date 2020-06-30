@@ -8,8 +8,8 @@ var sts = new aws.STS();
 // Configure aws with your accessKeyId and your secretAccessKey
 aws.config.update({
     region: 'us-east-1', // Put your aws region here
-    accessKeyId: "AKIAS2JRZPZW7R4ZSL2R",
-    secretAccessKey: "IrLy5LRPd44yukzuICjj8RhQdYZz54V33j+fNWR6",
+    accessKeyId: "AKIAS2JRZPZWZ6GBDBB2",
+    secretAccessKey: "ylXo27BwX+aPmY+6IeHyLoJklt0UWGrcxQf2ZrJb",
     signatureVersion:"v4"
 })
 
