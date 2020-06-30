@@ -10,7 +10,7 @@ aws.config.update({
     region: 'us-east-1', // Put your aws region here
     accessKeyId: "AKIAS2JRZPZWZ6GBDBB2",
     secretAccessKey: "ylXo27BwX+aPmY+6IeHyLoJklt0UWGrcxQf2ZrJb",
-    signatureVersion:"v4"
+    signatureVersion:"v4" 
 })
 
 const S3_BUCKET = process.env.S3_BUCKET_NAME
