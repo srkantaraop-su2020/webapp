@@ -9,10 +9,13 @@ echo "Set IP ADDRESS as env"
 echo $IP_ADDRESS
 echo "Finished verifying set env"
 pwd
+value=`cat ip.txt`
+echo "$value"
 echo "Installing pm2 for the server........."
 sudo npm install pm2 -g -f
 echo "Finished Installing pm2 for the server"
 echo "Starting node server now......."
+sudo sed -i -e "s|ipAddress|$value|g" server.js
 IP_ADDRESS=$IP_ADDRESS pm2 start server.js
 echo "Node server is up and running, find the active servers below"
 pm2 list
@@ -21,9 +24,6 @@ echo "Installing pm2 for the client........."
 sudo npm install pm2 --save
 echo "Finished Installing pm2 for the client"
 echo "Starting react server now......."
-cd /home/ubuntu
-value=`cat ip.txt`
-echo "$value"
 cd /home/ubuntu/frontend/src/APIs/
 sudo sed -i -e "s|ipAddress|$value|g" api.js
 cd ../../
