@@ -23,3 +23,5 @@ cd /home/ubuntu/frontend/
 REACT_APP_IP_ADDRESS=`$IP_ADDRESS` pm2 start node_modules/react-scripts/scripts/start.js --name "frontend"
 echo "Node server is up and running, find the active servers below"
 pm2 list
+echo "Starting cloud watch agent now..."
+sudo /opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-ctl -a fetch-config -m ec2 -c file:/home/ubuntu/cloudwatch-config.json -s

@@ -1,8 +1,16 @@
 const cartService = require('../services/cart.service');
 const bookService = require('../services/book.service');
+const statsClient = require('statsd-client');
+const stats = new statsClient({ host: 'localhost', port: 8125 });
+const logger = require('../config/winston-logger');
 
 // Create and Save a new Book
 exports.addItemToCart = (req, res) => {
+
+    var timer = new Date();
+    stats.increment('Add Item to cart');
+    logger.info("POST request for cart item");
+
     let noOfBooks;
     const resolveOnAdditionToCart = (book) => {
 
@@ -18,6 +26,7 @@ exports.addItemToCart = (req, res) => {
 
         res.status(200);
         res.json(book);
+        stats.timing('Post Cart item Time', timer);
     };
 
     const resolveToVerifyQuantity = (book) => {
@@ -25,6 +34,7 @@ exports.addItemToCart = (req, res) => {
         if(book.quantity < req.body.quantity) {
             res.status(500);
             res.json({"message": "There are only "+book.quantity+" books available!"})
+            stats.timing('Post Cart item Time', timer);
             return
         }
 
@@ -49,9 +59,14 @@ exports.addItemToCart = (req, res) => {
 
 exports.getCartItem = (req,res) => {
 
+    var timer = new Date();
+    stats.increment('Get Cart Item');
+    logger.info("Get request for cart item");
+
     const resolve = (cart) => {
         res.status(200);
         res.json(cart);
+        stats.timing('Get Cart item Time', timer);
     }
 
     cartService.getCartItem(req)
@@ -61,9 +76,14 @@ exports.getCartItem = (req,res) => {
 
 exports.getCartItemsByBuyerId = (req,res) => {
 
+    var timer = new Date();
+    stats.increment('Get Cart items by Buyer Id');
+    logger.info("Get request for Cart items by Buyer Id");
+
     const resolve = (items) => {
         res.status(200);
         res.json(items);
+        stats.timing('Get cart items Time', timer);
     }
 
     cartService.getCartItemsByBuyerId(req)
@@ -72,6 +92,10 @@ exports.getCartItemsByBuyerId = (req,res) => {
 }
 
 exports.updateCartItem = (req,res) => {
+
+    var timer = new Date();
+    stats.increment('Update Cart item');
+    logger.info("PUT request for cart item");
 
     let noOfBooks;
     const resolveToUpdateItemQuantity = (book) => {
@@ -89,6 +113,7 @@ exports.updateCartItem = (req,res) => {
 
         res.status(200);
         res.json(book);
+        stats.timing('Update Cart Item', timer);
     };
 
     const resolveToVerifyQuantity = (book) => {
@@ -96,6 +121,7 @@ exports.updateCartItem = (req,res) => {
         if(book.quantity < req.body.quantity) {
             res.status(500);
             res.json({"message": "There are only "+book.quantity+" books available! Update failed!"})
+            stats.timing('Update Cart Item', timer);
             return
         }
     

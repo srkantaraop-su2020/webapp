@@ -1,12 +1,22 @@
 const userService = require('../services/user.service');
+const statsClient = require('statsd-client');
+const stats = new statsClient({ host: 'localhost', port: 8125 });
+const logger = require('../config/winston-logger');
+
 let passport = require('passport');
 let userId;
 // Create and Save a new User
 exports.createUser = (req, res) => {
+
+  var timer = new Date();
+  stats.increment('Create User');
+  logger.info("POST request for user");
+
     const resolve = (user) => {
         res.status(200);
         delete user.dataValues.password;//deleting the password in the response
         res.json(user);
+        stats.timing('Post User Time', timer);
     };
 
     const resolveDuplicateUserCheck = () => {
@@ -24,11 +34,15 @@ exports.createUser = (req, res) => {
 // Find a single User with userName
 exports.getUser = (req, res) => {
 
-    console.log("*****Check if request is authenticated on arrival to profile page: "+req.isAuthenticated()+"***********");
+  var timer = new Date();
+  stats.increment('Get User');
+  logger.info("Get request for User");
+
     const resolve = (user) => {
         res.status(200);
         delete user.dataValues.password;//deleting the password in the response
         res.json(user);
+        stats.timing('Get User Time', timer);
     };
 
     userService.get(req, res)
@@ -40,13 +54,17 @@ exports.getUser = (req, res) => {
 // Find a single User with userName
 exports.authenticateUser = (req, res) => {
 
+  var timer = new Date();
+  stats.increment('Login User');
+  logger.info("POST request for user login");
+
   const resolve = (user) => {
       res.status(200);
       userId = user.dataValues.id;
       req.login(userId, function(err) {
-        console.log("*****Check if request is authenticated after login: "+req.isAuthenticated()+req.user+"***********");
         delete user.dataValues.password;//deleting the password in the response
         res.json(user);
+        stats.timing('Login User Time', timer);
       })      
   };
 
@@ -58,11 +76,17 @@ exports.authenticateUser = (req, res) => {
 
 // Update a User by the userName in the request
 exports.updateUser = (req, res) => {
+
+  var timer = new Date();
+  stats.increment('Update User');
+  logger.info("PUT request for User");
+
     const resolve = (user) => {
         res.status(200);
         res.send({
           message: "User was updated successfully."
         })
+        stats.timing('Update User Time', timer);
     };
 
     userService.update(req, res)
@@ -71,6 +95,11 @@ exports.updateUser = (req, res) => {
   };
 
 exports.logoutUser = (req, res) => {
+
+  var timer = new Date();
+  stats.increment('Logout User');
+  logger.info("Get request for user logout");
+
     req.logout();
     req.session.destroy();
     req.session = null;  
@@ -78,6 +107,7 @@ exports.logoutUser = (req, res) => {
     res.send({
       message: "Logged out successfully."
     })
+    stats.timing('Logout User Time', timer);
 }
   /**
  * Function for rendering the error on the screen
