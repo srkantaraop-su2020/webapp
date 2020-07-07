@@ -4,7 +4,7 @@ require('dotenv').config(); // Configure dotenv to load in the .env file
 const fileService = require('../services/file.service');
 const statsClient = require('statsd-client');
 const stats = new statsClient({ host: 'localhost', port: 8125 });
-const logger = require('../config/winston-logger');
+const logger = require('../config/winston-logger.config');
 
 var sts = new aws.STS();
 

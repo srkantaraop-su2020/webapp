@@ -1,7 +1,7 @@
 const authorService = require('../services/author.service');
 const statsClient = require('statsd-client');
 const stats = new statsClient({ host: 'localhost', port: 8125 });
-const logger = require('../config/winston-logger');
+const logger = require('../config/winston-logger.config');
 
 // Create and Save a new Author
 exports.createAuthor = (req, res) => {
