@@ -1,0 +1,13 @@
+[Unit]
+Description=server.js
+After=network.target
+
+[Service]
+Type=simple
+StandardOutput=syslog
+StandardError=syslog
+ExecStart=/usr/bin/node /home/ubuntu/webapp/server.js
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target

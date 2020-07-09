@@ -44,7 +44,7 @@ jobs:
             cat ip2.txt
             sudo chmod 765 ip.txt
             ls -la
-            zip -r webapp-${CIRCLE_BUILD_NUM}.zip app frontend test *.sh *.html *.yml *.json *.js *.txt .env
+            zip -r webapp-${CIRCLE_BUILD_NUM}.zip app frontend test *.sh *.html *.yml *.json *.js *.txt .env *.service
             pwd 
             ls -la
             mv webapp-${CIRCLE_BUILD_NUM}.zip webapp_zip/
