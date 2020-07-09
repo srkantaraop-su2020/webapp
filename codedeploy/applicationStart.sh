@@ -34,6 +34,5 @@ sudo echo "[Service]" >> /etc/systemd/system/pm2-ubuntu.service.d/10_auto_restar
 sudo echo "Restart=always" >> /etc/systemd/system/pm2-ubuntu.service.d/10_auto_restart_pm2.conf
 sudo echo "RestartSec=3" >> /etc/systemd/system/pm2-ubuntu.service.d/10_auto_restart_pm2.conf
 sudo systemctl daemon-reload
-pm2 save 
-sudo systemctl status pm2-ubuntu
+pm2 save
 echo "Finised setting up pm2 restart service"
