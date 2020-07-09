@@ -1,7 +1,14 @@
 const authorService = require('../services/author.service');
+const statsClient = require('statsd-client');
+const stats = new statsClient({ host: 'localhost', port: 8125 });
+const logger = require('../config/winston-logger.config');
 
 // Create and Save a new Author
 exports.createAuthor = (req, res) => {
+
+    var timer = new Date();
+    stats.increment('Create Author');
+    logger.info("POST request for Author");
 
     var count =0;
     const resolveMultipleAuthors = (author) => {
@@ -10,11 +17,13 @@ exports.createAuthor = (req, res) => {
         if(count == authorList.length){
             res.status(200);
             res.json("Added Multiple Authors");
+            stats.timing('Post Multiple Authors Time', timer);
         }
     };
     const resolve = (author) => {
         res.status(200);
         res.json(author);
+        stats.timing('Post Author Time', timer);
     };
 
     if(req.body.authorNames && req.body.authorNames.includes(',')) {
@@ -45,8 +54,13 @@ exports.createAuthor = (req, res) => {
 // Update the Author by deleting current authors associated with book and adding new authors
 exports.updateAuthor = (req, res) => {
 
+    var timer = new Date();
+    stats.increment('Update Author');
+    logger.info("PUT request for author");
+
     const resolveOnDeletion = () => {
         this.createAuthor(req,res)
+        stats.timing('Update Author Time', timer);
     };
 
     authorService.delete(req, res)

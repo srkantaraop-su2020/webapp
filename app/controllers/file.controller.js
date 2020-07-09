@@ -1,8 +1,11 @@
 var aws = require('aws-sdk'); 
 require('dotenv').config(); // Configure dotenv to load in the .env file
 
-const bookService = require('../services/book.service');
-const fileService = require('../services/file.service')
+const fileService = require('../services/file.service');
+const statsClient = require('statsd-client');
+const stats = new statsClient({ host: 'localhost', port: 8125 });
+const logger = require('../config/winston-logger.config');
+
 var sts = new aws.STS();
 
 // Configure aws with your region
@@ -16,38 +19,48 @@ const S3_BUCKET = process.env.S3_BUCKET_NAME
 // Create and Save a new Book
 exports.uploadImageToS3 = (req, res) => {
 
-        const s3 = new aws.S3();  // Create a new instance of S3
-        const fileName = req.body.fileName;
-        const fileType = req.body.fileType;
+    var timer = new Date();
+    stats.increment('Upload Book Image to S3');
+    logger.info("POST request for book image");
 
-        // Set up the payload of what we are sending to the S3 api
-        const s3Params = {
-            Bucket: S3_BUCKET,
-            Key: "book-"+req.body.bookId+"-"+req.body.fileName,
-            Expires: 500,
-            ContentType: fileType,
-            ACL: 'public-read'
-        };
+    const s3 = new aws.S3();  // Create a new instance of S3
+    const fileName = req.body.fileName;
+    const fileType = req.body.fileType;
 
-        // Make a request to the S3 API to get a signed URL which we can use to upload our file
-        s3.getSignedUrl('putObject', s3Params, (err, data) => {
-            if(err){
+    // Set up the payload of what we are sending to the S3 api
+    const s3Params = {
+        Bucket: S3_BUCKET,
+        Key: "book-" + req.body.bookId + "-" + req.body.fileName,
+        Expires: 500,
+        ContentType: fileType,
+        ACL: 'public-read'
+    };
+
+    // Make a request to the S3 API to get a signed URL which we can use to upload our file
+    s3.getSignedUrl('putObject', s3Params, (err, data) => {
+        if (err) {
             console.log(err);
-            res.json({success: false, error: err})
-            }
-            else {
-                // Data payload of what we are sending back, the url of the signedRequest and a URL where we can access the content after its saved. 
-                const returnData = {
-                    signedRequest: data,
-                    url: `https://${S3_BUCKET}.s3.amazonaws.com/${fileName}`
-                };
-                // Send it all back
-                res.json({success:true, data:{returnData}});
-            }
-        });
+            res.json({ success: false, error: err })
+        }
+        else {
+            // Data payload of what we are sending back, the url of the signedRequest and a URL where we can access the content after its saved. 
+            const returnData = {
+                signedRequest: data,
+                url: `https://${S3_BUCKET}.s3.amazonaws.com/${fileName}`
+            };
+            // Send it all back
+            res.json({ success: true, data: { returnData } });
+            stats.timing('Post Book Image Time', timer);
+        }
+    });
 };
 
 exports.getImages = (req, res) => {
+
+    var timer = new Date();
+    stats.increment('Get Book Images from S3');
+    logger.info("GET request for book images form S3");
+
     let listOfSources = []
     let listOfImageNames = []
     let imageCount = 0
@@ -69,6 +82,7 @@ exports.getImages = (req, res) => {
                     listOfImageNames.push(image.file_name)
                     if(imageCount == images.length) {
                         res.json({success:true, data:{listOfSources, listOfImageNames}});
+                        stats.timing('Get Book Images Time', timer);
                     }
                 })
             });
@@ -77,6 +91,11 @@ exports.getImages = (req, res) => {
 }
 
 exports.deleteFile=(req,res)=>{
+
+    var timer = new Date();
+    stats.increment('Delete Book Image from S3');
+    logger.info("Delete request for book image from S3");
+
     var s3 = new aws.S3({
         region : 'us-east-1',
         signatureVersion:"v4"
@@ -84,23 +103,21 @@ exports.deleteFile=(req,res)=>{
 
     var params;
     let fileNameList;
-    console.log("***********image names in controller:"+req.params.fileName)
     if (req.params.fileName.includes(',')) {
         fileNameList = req.params.fileName.split(",")
         for(let i=0;i<fileNameList.length;i++) {
             params = {  Bucket: S3_BUCKET, Key: 'book-'+req.params.bookId+'-'+fileNameList[i] };
-            console.log("*********params:"+params)
             s3.deleteObject(params, function(err, data) {
                 if (err) console.log(err, err.stack);  // error
                 else{
                     if(i == fileNameList.length-1) {
-                        console.log("************ Finished deleting images on S3 bucket, now starting with db")
                         fileService.deleteImagefromDB(req)
                         .then((data)=>{
                             res.status(200);
                             res.json({
                                 msg:"Image deleted Successfully"
                             })
+                            stats.timing('Delete Book Images Time', timer);
                         })
                     }
                 }
@@ -118,6 +135,7 @@ exports.deleteFile=(req,res)=>{
                     res.json({
                         msg:"Image deleted Successfully"
                     })
+                    stats.timing('Delete Book Image Time', timer);
                 })
             }
         });
@@ -125,9 +143,15 @@ exports.deleteFile=(req,res)=>{
   }
 
 exports.createBookImage = (req, res) => {
+
+    var timer = new Date();
+    stats.increment('Create Book Image in DB');
+    logger.info("POST request for book image in DB");
+
     const resolve = () => {
         res.status(200);
         res.json("Successfully uploaded book and Images");
+        stats.timing('Post Book Image Time in DB', timer);
     }
 
     fileService.save(req)
