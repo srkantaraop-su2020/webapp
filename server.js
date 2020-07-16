@@ -1,5 +1,11 @@
 const dotenv = require('dotenv');
 dotenv.config();
+const publicIp = require('public-ip');
+const ip;
+(async () => {
+    ip = (await publicIp.v4());
+    console.log("***** IP address: "+ip+"*******")
+})();
 console.log(`Your port is ${process.env.IP_ADDRESS}`);
 
 let express = require('express'),
@@ -48,7 +54,7 @@ app.use(passport.session());
 
 //Enabling CORS
 app.use(function (req, res, next) { //next is a function that calls next middleware function;
-    res.header("Access-Control-Allow-Origin", "http://ipAddress:3000");
+    res.header("Access-Control-Allow-Origin", "http://"+ip+":3000");
     res.header("Access-Control-Allow-Credentials", true);
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
     res.header("Access-Control-Allow-Methods", "GET, POST, OPTIONS, PUT, DELETE");
