@@ -31,7 +31,7 @@ class CreateBook extends Component {
         book.quantity = document.getElementById('quantity').value
         book.price = document.getElementById('price').value
         book.sellerId = sessionStorage.getItem("userId")
-
+        book.token = sessionStorage.getItem('token')
 
         ax.createBook(book).then(resp => {
             if(resp !== undefined) {

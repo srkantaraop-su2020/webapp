@@ -28,6 +28,7 @@ class Login extends Component{
                 else {
                     sessionStorage.setItem("userName",resp['user_name']);
                     sessionStorage.setItem("userId",resp['id']);
+                    sessionStorage.setItem("token",resp['token'])
                     this.props.history.push({
                         pathname: '/profile'
                     });
