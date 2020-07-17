@@ -63,6 +63,7 @@ exports.authenticateUser = (req, res) => {
       userId = user.dataValues.id;
       req.login(userId, function(err) {
         delete user.dataValues.password;//deleting the password in the response
+        user.dataValues.token = Math.random();
         res.json(user);
         stats.timing('Login User Time', timer);
       })      

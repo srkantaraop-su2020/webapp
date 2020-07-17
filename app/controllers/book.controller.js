@@ -23,9 +23,15 @@ exports.createBook = (req, res) => {
             .catch(renderErrorResponse(res, 500, "Failed to create Book"));
     }
     
-    bookService.duplicateBookCheckBySameSeller(req)
+    if(req.body.token == "" || req.body.token == null || !req.body.token) {
+        res.status(403);
+        res.json("You don't have permission to create book, Please login!")
+    }
+    else {
+        bookService.duplicateBookCheckBySameSeller(req)
         .then(resolveToSaveBook)
         .catch(renderErrorResponse(res, 500, "You've already added this book. Please modify it if any changes are to be made."))
+    }
 };
 
 // Update a Book
@@ -110,7 +116,6 @@ exports.deleteBook = (req, res) => {
  * Function for rendering the error on the screen
  */
 let renderErrorResponse = (response, code, message) => {
-    
     const errorCallback = (error) => {
         console.log(error);
         if (error) {
