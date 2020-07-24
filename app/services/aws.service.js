@@ -3,14 +3,15 @@ aws.config.update({
     region: 'us-east-1', // Put your aws region here
     signatureVersion:"v4" 
 })
-var sns = new aws.SNS({
-    region: 'us-east-1', // Put your aws region here
-    signatureVersion:"v4"
-});
 const logger = require('../config/winston-logger.config');
 
 exports.snsSendPasswordResetEmail = function(request, response) {
-           
+        
+    var sns = new aws.SNS({
+        region: 'us-east-1', // Put your aws region here
+        signatureVersion:"v4"
+    });
+    
     logger.info("Sending the link to email :: " + request.body.userName);
             
     let payload = {
