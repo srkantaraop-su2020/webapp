@@ -5,6 +5,9 @@ aws.config.update({
 })
 const logger = require('../config/winston-logger.config');
 
+const { v4: uuidv4 } = require('uuid');
+let uuid = uuidv4();
+
 exports.snsSendPasswordResetEmail = function(request, response) {
         
     var sns = new aws.SNS({
@@ -17,7 +20,7 @@ exports.snsSendPasswordResetEmail = function(request, response) {
     let payload = {
         data: {
             Email: request.body.userName,
-            Link: Math.random()+"Ae23IoPasdEF"+new Date().getTime()
+            Token: uuid
         }
     };
 
