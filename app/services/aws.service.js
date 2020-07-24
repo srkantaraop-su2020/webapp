@@ -25,8 +25,13 @@ exports.snsSendPasswordResetEmail = function(request, response) {
     sns.publish(params, (err, data) => {
         if (err) {
             logger.error("Email for ::" + request.body.userName + " was not successful error ::" + err);
-            return data;
+            response.status(500)
+            response.json({"msg":"something went wrong"})
         } else {
+            response.status(200)
+            response.json({
+                data
+            })
             logger.info('Email for ::' + request.body.userName + " sent successfully!");
         }
     })

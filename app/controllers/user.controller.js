@@ -125,6 +125,7 @@ exports.resetPassword = (req, res) => {
     };
 
     const resolveToSendEmail = () => {
+      logger.info("Verified Registered User, triggering email now");
       awsService.snsSendPasswordResetEmail(req, res)
       .then(resolve)
       .catch(renderErrorResponse(res, 500, "Error occured while sending Email"));
