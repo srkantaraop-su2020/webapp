@@ -40,7 +40,7 @@ exports.snsSendPasswordResetEmail = function(request, response) {
         } else {
             response.status = 200
             response.json({"msg":"Email for ::" + request.body.userName + " sent successfully!"});
-            logger.info("Sent email successfully");
+            logger.info("Sent email successfully"); 
         }
     })
 };
