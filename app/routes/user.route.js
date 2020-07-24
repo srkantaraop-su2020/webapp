@@ -53,6 +53,8 @@ module.exports = function (app) {
     app.route('/v1/image/fileName/:fileName/bookId/:bookId')
         .delete(fileController.deleteFile)
 
+    app.route('/v1/resetPassword')
+        .post(userController.resetPassword)
     // app.post('/v1/image2', fileConfig.upload.single('bookImage'),fileController.createBookImage)
 
 };

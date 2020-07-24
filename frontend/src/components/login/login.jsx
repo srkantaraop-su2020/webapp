@@ -47,6 +47,12 @@ class Login extends Component{
         });
     }
 
+    gotoPasswordReset() {
+        this.props.history.push({
+            pathname: '/passwordReset'
+        })
+    }
+
     render(){
         return(
             <div>
@@ -71,6 +77,10 @@ class Login extends Component{
 
                     <Button className="signup" variant="primary" type="button" onClick={(e)=>{this.gotoSignUp()}}>
                     Not a Registered User? Click here
+                    </Button>
+
+                    <Button className="signup" variant="primary" type="button" onClick={(e)=>{this.gotoPasswordReset()}}>
+                        Forgot my Password!
                     </Button>
                 </Form>
                 </div>
