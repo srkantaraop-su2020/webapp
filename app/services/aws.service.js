@@ -11,7 +11,7 @@ exports.snsSendPasswordResetEmail = function(request, response) {
         region: 'us-east-1', // Put your aws region here
         signatureVersion:"v4"
     });
-    
+
     logger.info("Sending the link to email :: " + request.body.userName);
             
     let payload = {
@@ -28,7 +28,7 @@ exports.snsSendPasswordResetEmail = function(request, response) {
         TopicArn: process.env.TOPIC_ARN
     }
 
-    sns.publish(params, (err, data) => {
+    sns.publish(params, (err, data) => { 
         if (err) {
             logger.error("Email for ::" + request.body.userName + " was not successful error ::" + err);
             response.status(500)
