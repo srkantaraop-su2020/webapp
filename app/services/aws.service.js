@@ -16,7 +16,8 @@ exports.snsSendPasswordResetEmail = function(request, response) {
             
     let payload = {
         data: {
-            Email: request.body.userName
+            Email: request.body.userName,
+            Link: Math.random()+"Ae23IoPasdEF"+new Date().getTime()
         }
     };
 
