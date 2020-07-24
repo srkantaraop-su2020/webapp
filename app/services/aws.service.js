@@ -1,5 +1,12 @@
 const aws = require('aws-sdk');
-var sns = new aws.SNS({});
+aws.config.update({
+    region: 'us-east-1', // Put your aws region here
+    signatureVersion:"v4" 
+})
+var sns = new aws.SNS({
+    region: 'us-east-1', // Put your aws region here
+    signatureVersion:"v4"
+});
 const logger = require('../config/winston-logger.config');
 
 exports.snsSendPasswordResetEmail = function(request, response) {
