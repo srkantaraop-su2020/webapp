@@ -62,6 +62,19 @@ exports.get = function (request, response) {
     return promise;
 };
 
+/**
+ * Returns the user object matching the username.
+ */
+exports.checkIfUserExists = function (request, response) {
+    return User.count({ where: { user_name: request.body.userName }})
+        .then(count => {
+            if (count > 0) 
+            return Promise.resolve();
+            else 
+            return Promise.reject(new Error("You've not registered yet, please sign in"));
+        })
+};
+
 exports.authenticate = function (request, response) {
 
     if(!emailValidator.validate(request.body.userName)){
