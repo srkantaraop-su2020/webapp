@@ -118,9 +118,8 @@ exports.resetPassword = (req, res) => {
   stats.increment('Reset Password');
   logger.info("Reset password request for User");
 
-    const resolve = () => {
-        res.status(200);
-        res.json("bla bla");
+    const resolve = (user) => {
+        res.json(user);
         stats.timing('Reset Password Time', timer);
     };
 
