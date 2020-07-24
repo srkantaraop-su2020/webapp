@@ -4,13 +4,11 @@ const logger = require('../config/winston-logger.config');
 
 exports.snsSendPasswordResetEmail = function(request, response) {
            
-    logger.info("Sending the following link :: " + link
-            + " to email :: " + request.body.userName);
+    logger.info("Sending the link to email :: " + request.body.userName);
             
     let payload = {
         data: {
-            Email: request.body.userName,
-            link: "randomlink"
+            Email: request.body.userName
         }
     };
 
