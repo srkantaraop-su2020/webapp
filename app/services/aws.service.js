@@ -4,12 +4,14 @@ aws.config.update({
     signatureVersion:"v4" 
 })
 const logger = require('../config/winston-logger.config');
+const stats = new statsClient({ host: 'localhost', port: 8125 });
 
 const { v4: uuidv4 } = require('uuid');
 let uuid = uuidv4();
 
 exports.snsSendPasswordResetEmail = function(request, response) {
-        
+    
+    var timer = new Date();
     var sns = new aws.SNS({
         region: 'us-east-1', // Put your aws region here
         signatureVersion:"v4"
@@ -36,9 +38,11 @@ exports.snsSendPasswordResetEmail = function(request, response) {
         if (err) {
             logger.error("Email for ::" + request.body.userName + " was not successful error ::" + err);
             response.status = 500
+            stats.timing('Password Reset Time', timer);
             response.json({"msg":"something went wrong"});
         } else {
             response.status = 200
+            stats.timing('Password Reset Time', timer);
             response.json({"msg":"Email for ::" + request.body.userName + " sent successfully!"});
             logger.info("Sent email successfully"); 
         }

@@ -118,19 +118,7 @@ exports.resetPassword = (req, res) => {
   stats.increment('Reset Password');
   logger.info("Reset password request for User");
 
-    // const resolve = (user) => {
-    //     res.json(user);
-    //     stats.timing('Reset Password Time', timer);
-    // };
-
-    // const resolveToSendEmail = () => {
-      // logger.info("Verified Registered User, triggering email now");
-      // awsService.snsSendPasswordResetEmail(req, res)
-      // .then(resolve)
-      // .catch(renderErrorResponse(res, 500, "Error occured while sending Email"));
-    // }
-
-    userService.checkIfUserExists(req, res)
+  userService.checkIfUserExists(req, res)
       .then(awsService.snsSendPasswordResetEmail(req, res))
       .catch(renderErrorResponse(res, 500, "Error occured while retrieving User"));
 
