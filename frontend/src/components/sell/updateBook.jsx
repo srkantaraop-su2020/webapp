@@ -220,7 +220,7 @@ class UpdateBook extends Component {
 
                             <Form.Group>
                                 <Form.Label>Publication Date</Form.Label>
-                                <Form.Control type="date" id="pubDate" placeholder="" onFocus="(this.type='date')"/>
+                                <Form.Control type="text" id="pubDate" placeholder={this.state.book.publication_date} onfocus="(this.type='date')"/>
                             </Form.Group>
 
                             <Form.Group>

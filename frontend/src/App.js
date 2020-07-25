@@ -12,6 +12,7 @@ import Sell from "../src/components/sell/sell";
 import CreateBook from "../src/components/sell/createBook";
 import UpdateBook from "../src/components/sell/updateBook";
 import Cart from "../src/components/buy/cart";
+import PasswordReset from "../src/components/login/passwordReset";
 require('dotenv').config({path:'~/.env'})
 function App() {
   return (
@@ -45,6 +46,7 @@ function App() {
         <Route path="/updateBook"component={UpdateBook} />
         <Route path="/viewBook"component={UpdateBook} />
         <Route path="/viewCart"component={Cart} />
+        <Route path="/passwordReset"component={PasswordReset} />
         <Route path="/" exact component={Login} />
       </Switch>
     </div>

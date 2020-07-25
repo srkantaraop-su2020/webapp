@@ -188,3 +188,14 @@ export const deleteImage = async(fileName, bookId) => {
     }
   }
 }
+
+export const resetPassword = async(user) => {
+  try{
+    const res = await axios.post('http://'+ip+':8080/v1/resetPassword',user);
+    return res.data;
+  } catch (error) {
+    if (error.response) {
+      return error.response;
+    }
+  }
+}

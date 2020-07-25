@@ -1,4 +1,5 @@
 const userService = require('../services/user.service');
+const awsService = require('../services/aws.service')
 const statsClient = require('statsd-client');
 const stats = new statsClient({ host: 'localhost', port: 8125 });
 const logger = require('../config/winston-logger.config');
@@ -110,6 +111,19 @@ exports.logoutUser = (req, res) => {
     })
     stats.timing('Logout User Time', timer);
 }
+
+exports.resetPassword = (req, res) => {
+
+  var timer = new Date();
+  stats.increment('Reset Password');
+  logger.info("Reset password request for User");
+
+  userService.checkIfUserExists(req, res)
+      .then(awsService.snsSendPasswordResetEmail(req, res))
+      .catch(renderErrorResponse(res, 500, "Error occured while retrieving User"));
+
+  };
+
   /**
  * Function for rendering the error on the screen
  */
