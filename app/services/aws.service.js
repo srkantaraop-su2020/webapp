@@ -4,6 +4,7 @@ aws.config.update({
     signatureVersion:"v4" 
 })
 const logger = require('../config/winston-logger.config');
+const statsClient = require('statsd-client');
 const stats = new statsClient({ host: 'localhost', port: 8125 });
 
 const { v4: uuidv4 } = require('uuid');
