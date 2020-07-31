@@ -68,7 +68,7 @@ class CreateBook extends Component {
                                         let fileName = file.name;
                                         let fileType = file.type;
                                         console.log("Preparing the upload");
-                                        axios.post("http://"+window.location.hostname+":8080/v1/image",{
+                                        axios.post("https://"+window.location.hostname+":8080/v1/image",{
                                             fileName : fileName,
                                             fileType : fileType,
                                             bookId : resp.id
@@ -91,7 +91,7 @@ class CreateBook extends Component {
                                                 console.log("Response from s3")
                                                 this.setState({success: true});
 
-                                                axios.post("http://"+window.location.hostname+":8080/v1/bookImage",{
+                                                axios.post("https://"+window.location.hostname+":8080/v1/bookImage",{
                                                     fileName : fileName,
                                                     ownerId : resp.seller_id,
                                                     bookId : resp.id
