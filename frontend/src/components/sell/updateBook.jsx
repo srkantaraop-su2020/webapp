@@ -266,7 +266,7 @@ class UpdateBook extends Component {
 
                             <Form.Group>
                                 <Form.Label>Publication Date</Form.Label>
-                                <Form.Control disabled type="text" id="pubDate" placeholder={this.state.book.publication_date}/>
+                                <Form.Control disabled type="text" id="pubDate" placeholder={this.state.book.publication_date.toLocaleDateString()}/>
                             </Form.Group>
 
                             <Form.Group>
