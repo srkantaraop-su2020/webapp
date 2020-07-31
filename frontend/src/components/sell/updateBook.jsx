@@ -4,6 +4,7 @@ import  * as ax  from '../../APIs/api';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button'
 import axios from 'axios';
+var dateFormat = require('dateformat');
 
 class UpdateBook extends Component {
 
@@ -55,7 +56,8 @@ class UpdateBook extends Component {
                     })
                     this.setState({
                         book: response,
-                        authors: authorNameList
+                        authors: authorNameList,
+                        publication_date: dateFormat(response.publication_date, "isoDate")
                     })
                 }
             })
@@ -138,7 +140,7 @@ class UpdateBook extends Component {
                             let fileName = file.name;
                             let fileType = file.type;
                             console.log("Preparing the upload");
-                            axios.post("http://"+window.location.hostname+":8080/v1/image",{
+                            axios.post("https://"+window.location.hostname+":8080/v1/image",{
                                 fileName : fileName,
                                 fileType : fileType,
                                 bookId : this.state.book.id
@@ -161,7 +163,7 @@ class UpdateBook extends Component {
                                     console.log("Response from s3")
                                     this.setState({success: true});
 
-                                    axios.post("http://"+window.location.hostname+":8080/v1/bookImage",{
+                                    axios.post("https://"+window.location.hostname+":8080/v1/bookImage",{
                                         fileName : fileName,
                                         ownerId : this.state.book.seller_id,
                                         bookId : this.state.book.id
@@ -220,7 +222,7 @@ class UpdateBook extends Component {
 
                             <Form.Group>
                                 <Form.Label>Publication Date</Form.Label>
-                                <Form.Control type="text" id="pubDate" placeholder={this.state.book.publication_date} onfocus="(this.type='date')"/>
+                                <Form.Control type="text" id="pubDate" placeholder={this.state.publication_date} onfocus="(this.type='date')"/>
                             </Form.Group>
 
                             <Form.Group>
@@ -266,7 +268,7 @@ class UpdateBook extends Component {
 
                             <Form.Group>
                                 <Form.Label>Publication Date</Form.Label>
-                                <Form.Control disabled type="text" id="pubDate" placeholder={this.state.book.publication_date}/>
+                                <Form.Control disabled type="text" id="pubDate" placeholder={this.state.publication_date}/>
                             </Form.Group>
 
                             <Form.Group>
